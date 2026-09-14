@@ -1,0 +1,31 @@
+# User data and generated artifacts
+Data/
+data/
+outputs/
+models/checkpoints/
+models/detectors/*.pth
+models/body_models/
+models/runtime_body_models/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Upstream runtime artifacts
+third_party/SMPLer-X/output/
+third_party/SMPLer-X/demo/results/

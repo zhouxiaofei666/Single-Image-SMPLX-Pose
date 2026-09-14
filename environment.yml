@@ -1,0 +1,13 @@
+name: occluded-sitting-smplx
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip
+  - pytorch=1.12.0
+  - torchvision=0.13.0
+  - torchaudio=0.12.0
+  - cudatoolkit=11.3
+  - pip:
+      - -e .[web]
