@@ -1,20 +1,20 @@
 cff-version: 1.2.0
-message: "If you use this project, cite SMPLer-X and SMPL-X as described in README.md."
-title: "Occluded-Sitting-SMPLX"
+message: "If you use this project, please cite SMPLer-X and SMPL-X as described in README.md."
+title: "Single-Image-SMPLX-Pose"
 version: 0.1.0
 date-released: 2026-09-14
 license: LicenseRef-S-Lab-1.0
 authors:
   - family-names: "Contributors"
-    given-names: "Occluded-Sitting-SMPLX"
+    given-names: "Single-Image-SMPLX-Pose"
 preferred-citation:
   type: software
-  title: "Occluded-Sitting-SMPLX"
+  title: "Single-Image-SMPLX-Pose"
   version: 0.1.0
   year: 2026
   authors:
     - family-names: "Contributors"
-      given-names: "Occluded-Sitting-SMPLX"
+      given-names: "Single-Image-SMPLX-Pose"
 references:
   - type: conference-paper
     title: "SMPLer-X: Scaling up expressive human pose and shape estimation"
