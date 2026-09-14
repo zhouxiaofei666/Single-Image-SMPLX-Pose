@@ -8,6 +8,9 @@ from .backend import SMPLerXBackend
 from .errors import ReconstructionError
 from .reconstructor import Reconstructor
 
+AUTO_DETECT_MODE = "Automatically detect the largest person"
+FULL_IMAGE_MODE = "Use the edited image as the full person crop"
+
 
 def _editor_path(value: Optional[Dict[str, Any]]) -> Optional[str]:
     if not value:
@@ -24,14 +27,14 @@ def build_demo(reconstructor: Reconstructor):
     def run(editor_value, selection_mode):
         image_path = _editor_path(editor_value)
         if not image_path:
-            return None, None, None, {}, None, "请先上传图片。"
+            return None, None, None, {}, None, "Please upload an image first."
         try:
             result = reconstructor.reconstruct(
                 image_path,
-                full_image=selection_mode == "整张编辑结果为人物",
+                full_image=selection_mode == FULL_IMAGE_MODE,
             )
         except (ReconstructionError, ValueError) as exc:
-            return None, None, None, {}, None, f"失败：{exc}"
+            return None, None, None, {}, None, f"Reconstruction failed: {exc}"
         summary = {
             "run_dir": str(result.run_dir),
             "bbox_xywh": result.bbox.as_xywh(),
@@ -49,7 +52,7 @@ def build_demo(reconstructor: Reconstructor):
                     "transl",
                 }
             },
-            "face_detail": "中性（不导出预测表情、下颌或眼球动作）",
+            "face_detail": "Neutral (predicted expression, jaw pose, and eye pose are not exported)",
             "timings_seconds": result.timings,
         }
         return (
@@ -58,43 +61,44 @@ def build_demo(reconstructor: Reconstructor):
             str(result.obj_path),
             summary,
             str(result.archive_path),
-            "完成。OBJ、SMPL-X 参数、元数据和渲染图已打包。",
+            "Done. The OBJ mesh, SMPL-X parameters, metadata, and renders have been packaged.",
         )
 
-    with gr.Blocks(title="Occluded-Sitting-SMPLX", theme=gr.themes.Soft()) as demo:
+    with gr.Blocks(title="Single-Image SMPL-X Pose", theme=gr.themes.Soft()) as demo:
         gr.Markdown(
-            "# Occluded-Sitting-SMPLX\n"
-            "使用预训练 **SMPLer-X-S32** 从单张图片恢复身体与双手姿态；"
-            "面部固定为中性。"
-            "图片只在本机处理，不会上传到外部服务。"
+            "# Single-Image SMPL-X Pose\n"
+            "Reconstruct body and hand pose from one RGB image with the pretrained "
+            "**SMPLer-X-S32** model. Facial expression, jaw pose, and eye pose are "
+            "neutralized. Processing stays on this machine and is not sent to a hosted "
+            "inference service."
         )
         with gr.Row():
             with gr.Column(scale=1):
                 image = gr.ImageEditor(
-                    label="上传或裁剪人物图片",
+                    label="Upload or crop a person image",
                     type="filepath",
                     sources=["upload"],
                     height=520,
                 )
                 mode = gr.Radio(
-                    ["自动检测最大人物", "整张编辑结果为人物"],
-                    value="自动检测最大人物",
-                    label="人物选择",
+                    [AUTO_DETECT_MODE, FULL_IMAGE_MODE],
+                    value=AUTO_DETECT_MODE,
+                    label="Person selection",
                 )
-                submit = gr.Button("开始重建", variant="primary")
-                status = gr.Markdown("等待输入。")
-                archive = gr.File(label="下载完整结果 ZIP")
+                submit = gr.Button("Reconstruct", variant="primary")
+                status = gr.Markdown("Waiting for an image.")
+                archive = gr.File(label="Download complete result ZIP")
             with gr.Column(scale=1):
-                overlay = gr.Image(label="原图 Mesh 叠加", type="filepath")
-                preview = gr.Image(label="三视图渲染", type="filepath")
+                overlay = gr.Image(label="Mesh overlay", type="filepath")
+                preview = gr.Image(label="Front / side / back preview", type="filepath")
         with gr.Row():
             model = gr.Model3D(
-                label="交互式三维网格",
+                label="Interactive 3D mesh",
                 display_mode="solid",
                 clear_color=(0.96, 0.97, 0.98, 1.0),
                 height=600,
             )
-            details = gr.JSON(label="参数与运行摘要")
+            details = gr.JSON(label="Parameters and runtime summary")
         submit.click(
             run,
             inputs=[image, mode],
