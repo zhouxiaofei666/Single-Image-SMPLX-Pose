@@ -52,7 +52,9 @@ def build_demo(reconstructor: Reconstructor):
                     "transl",
                 }
             },
-            "face_detail": "Neutral (predicted expression, jaw pose, and eye pose are not exported)",
+            "face_detail": (
+                "Neutral (predicted expression, jaw pose, and eye pose are not exported)"
+            ),
             "timings_seconds": result.timings,
         }
         return (
@@ -61,7 +63,10 @@ def build_demo(reconstructor: Reconstructor):
             str(result.obj_path),
             summary,
             str(result.archive_path),
-            "Done. The OBJ mesh, SMPL-X parameters, metadata, and renders have been packaged.",
+            (
+                "Done. The OBJ mesh, SMPL-X parameters, metadata, and renders have "
+                "been packaged."
+            ),
         )
 
     with gr.Blocks(title="Single-Image SMPL-X Pose", theme=gr.themes.Soft()) as demo:
