@@ -301,11 +301,12 @@ PyTorch 峰值显存，便于确认 RTX 2060 6GB 兼容性。
 }
 ```
 
-## 发布到自己的 GitHub
+## 维护与二次发布
 
-上传前请确认 GitHub 仓库中不包含个人图片、`models/body_models/`、
-`models/checkpoints/`、`outputs/` 或 `.venv/`。它们已经由 `.gitignore` 排除；公开仓库只
-保留代码、配置、许可证、测试和公开模型下载脚本。建议先执行：
+本项目已经发布在 [zhouxiaofei666/Single-Image-SMPLX-Pose](https://github.com/zhouxiaofei666/Single-Image-SMPLX-Pose)。
+如果你要基于本项目创建自己的副本或继续提交，请先确认仓库中不包含个人图片、
+`models/body_models/`、`models/checkpoints/`、`outputs/` 或 `.venv/`。它们已经由
+`.gitignore` 排除；公开仓库只保留代码、配置、许可证、测试和公开模型下载脚本。建议先执行：
 
 ```powershell
 git status --short
@@ -314,12 +315,10 @@ git ls-files | Select-String '\.(pth|pt|tar|pkl|npz|jpg|jpeg|png|zip)$'
 .\.venv\Scripts\python.exe -m pytest -m "not gpu"
 ```
 
-本目录已经是 Git 仓库并包含固定子模块与 GitHub Actions。确认 Git 用户信息后提交，再将
-`<USER>` 替换为你的 GitHub 用户名并添加远程：
+本目录包含固定子模块与 GitHub Actions。修改后可运行：
 
-```bash
+```powershell
 git add .
-git commit -m "Initial Single-Image-SMPLX-Pose release"
-git remote add origin git@github.com:<USER>/Single-Image-SMPLX-Pose.git
-git push -u origin main
+git commit -m "Describe your change"
+git push
 ```
